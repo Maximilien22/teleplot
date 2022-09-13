@@ -57,6 +57,21 @@ function importLayoutJSON(event) {
                     chart.gridPos = w.gridPos;
                     setTimeout(()=>{updateWidgetSize_(chart)}, 100);
                     widgets.push(chart);
+
+
+
+                    /*
+                    let chart = new ChartWidget(!isTimeBased);
+                    let serie = new DataSerie(telemetryName);
+                    serie.addSource(telemetryName);
+                    chart.addSerie(serie);
+
+                    if(prepend)
+                        widgets.unshift(chart);
+                    else 
+                        widgets.push(chart);
+                    */  
+                    
                 }
             }
             app.leftPanelVisible = false; // hide telemetry list

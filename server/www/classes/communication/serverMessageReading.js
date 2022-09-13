@@ -1,3 +1,5 @@
+//TODO, IS THIS REALLY USEFUL : ?
+
 const defaultPlotOpts = {
     title: "",
     width: 400,
@@ -128,6 +130,8 @@ function parseData(msgIn){
     }
 }
 
+//TODO, make widget building logic in a class named widgetBUilding (use it everywhere where we build widgets) ?
+
 // adds
 function appendData(key, valuesX, valuesY, valuesZ, flags) {
     if(key.substring(0, 6) === "statsd") return;
@@ -159,11 +163,13 @@ function appendData(key, valuesX, valuesY, valuesZ, flags) {
         Vue.set(app.telemetries, key, obj)
         // Create widget
         if(shouldPlot){
-            let chart = new ChartWidget(!isTimeBased);
+            WidgetBuilder.getInstance().buildChartWidget(key, isTimeBased);
+            
+            /*let chart = new ChartWidget(!isTimeBased);
             let serie = new DataSerie(key);
             serie.addSource(key);
             chart.addSerie(serie);
-            widgets.push(chart);
+            widgets.push(chart);*/
         }
     }
     if(telemBuffer[key] == undefined){

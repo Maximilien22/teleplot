@@ -124,12 +124,17 @@ function initializeAppView()
                 e.stopPropagation();      
                 newChartDropZoneOver = false;
                 let telemetryName = e.dataTransfer.getData("telemetryName");
-                let chart = new ChartWidget(!!app.telemetries[telemetryName].xy);
+                let isTimeBased = !app.telemetries[telemetryName].xy;
+
+
+                /*let chart = new ChartWidget(!isTimeBased);
                 let serie = new DataSerie(telemetryName);
                 serie.addSource(telemetryName);
                 chart.addSerie(serie);
                 if(prepend) widgets.unshift(chart);
-                else widgets.push(chart);
+                else widgets.push(chart);*/
+
+                WidgetBuilder.getInstance().buildChartWidget(telemetryName, isTimeBased, prepend);
             },
             onNewChartDragOver: function(e){
                 e.preventDefault();
