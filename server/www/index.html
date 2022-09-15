@@ -212,8 +212,10 @@
                             </div>
                             <span class="widget-option-resize" v-on:mousedown="onMouseDownOnResizeButton($event, widget)" title="Resize widget">⇲</span>
                             
-                            <uplot-vue v-if="widget.type == 'chart' && !widget.isResized" v-bind:data="widget.data" v-bind:options="widget.options"/>
-                            
+
+                            <single_value_component v-if="widget.type == 'singleValue'"></single_value_component>
+                            <uplot-vue v-else-if="widget.type == 'chart' && !widget.isResized" v-bind:data="widget.data" v-bind:options="widget.options"/>
+
                         </div>
                     </div>
                     <!-- PLOTS -->
@@ -295,6 +297,7 @@
     
     <script src="lib/uPlot.iife.js"></script>
     <script src="lib/uplot-component.js"></script>
+    <script type = "text/javascript" src = "components/singleValueComponent.js"></script>
     <script src="./constants.js"></script>
     <script src="./classes/communication/connection/Connection.js"></script>
     <script src="./classes/communication/connection/ConnectionTeleplotVSCode.js"></script>
@@ -303,6 +306,7 @@
     <script src="./classes/communication/serverMessageReading.js"></script>
     <script src="./classes/widgets/DataWidget.js"></script>
     <script src="./classes/widgets/ChartWidget.js"></script>
+    <script src="./classes/widgets/SingleValueWidget.js"></script>
     <script src="./classes/communication/data/DataInput.js"></script>
     <script src="./classes/communication/data/DataInputSerial.js"></script>
     <script src="./classes/communication/data/DataInputUDP.js"></script>

@@ -18,7 +18,7 @@ class DataWidget{
         }
 
         this.series = []; // DataSerie
-        this.type = "chart";
+        this.type = undefined;
         /*this way of generating ids may create two DataWidgets with same ids by accident :
         this.id = "widget-chart-" + (Math.random() + 1).toString(36).substring(7);*/
         this.id = "widget-chart-" + widgetCount;
