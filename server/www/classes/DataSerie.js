@@ -10,7 +10,9 @@ class DataSerie{
         this.dataIdx = undefined;
         this.data = [[],[]]; // data[0] contains the timestamps and data[1] contains the values corresponding to each timestamp
         this.pendingData = [[],[]];
-        this.options = {};
+        this.options = {
+            _serie : _name,
+        };
         this.value = null;
         this.stats = null;
     }

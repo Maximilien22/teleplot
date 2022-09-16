@@ -171,7 +171,7 @@
                                 </div>
                                 <div class="serie-header-container">
                                     <div v-for="serie of widget.series" class="serie-header" v-bind:class="{ 'serie-header-small': isWidgetSmallOnGrid(widget) }">
-                                        <div class="serie-name-container">
+                                        <div v-if="widget.type!='singleValue'" class="serie-name-container">
                                             <span class="serie-color" v-bind:style="{'background-color':serie.options.fill, 'border-color':serie.options.stroke}" >
                                                 <span class="serie-value" v-if="typeof serie.value == 'number'">{{serie.value.toFixed(4)}}</span>
                                                 <span class="serie-value" v-if="typeof serie.value == 'string'">{{serie.value}}</span>
@@ -205,7 +205,7 @@
                                 <div class="widget-option-container">
                                     <!--<span class="widget-option" v-if="!widget.hidden" @click="showWidget(widget, false)">—</span>
                                     <span class="widget-option" v-if="widget.hidden" @click="showWidget(widget, true)">▭</span>-->
-                                    <span class="widget-option" @click="updateStats(widget)" title="Recalculate stats">‱</span>
+                                    <span v-if="widget.type != 'singleValue'" class="widget-option" @click="updateStats(widget)" title="Recalculate stats">‱</span>
                                     <span id ="closeWidgetButton" class="widget-option" @click="removeWidget(widget)" title="Close widget">╳</span>
                                     
                                 </div>
@@ -213,7 +213,7 @@
                             <span class="widget-option-resize" v-on:mousedown="onMouseDownOnResizeButton($event, widget)" title="Resize widget">⇲</span>
                             
 
-                            <single_value_component v-if="widget.type == 'singleValue'"></single_value_component>
+                            <single_value_component class="single-value-widget" v-if="widget.type == 'singleValue'" v-bind:options="widget.options"></single_value_component>
                             <uplot-vue v-else-if="widget.type == 'chart' && !widget.isResized" v-bind:data="widget.data" v-bind:options="widget.options"/>
 
                         </div>
@@ -296,8 +296,8 @@
     </body>
     
     <script src="lib/uPlot.iife.js"></script>
-    <script src="lib/uplot-component.js"></script>
-    <script type = "text/javascript" src = "components/singleValueComponent.js"></script>
+    <script src="components/uplot-component.js"></script>
+    <script src="components/singleValueComponent.js"></script>
     <script src="./constants.js"></script>
     <script src="./classes/communication/connection/Connection.js"></script>
     <script src="./classes/communication/connection/ConnectionTeleplotVSCode.js"></script>

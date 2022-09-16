@@ -1,3 +1,17 @@
+var cursorXValueOnWidget = undefined;
+
+/* {
+    value_intern : undefined,
+
+    set value(newValue){
+        this.value_intern = newValue;
+        this.onValueChange(newValue)
+    },
+    get value()
+    {
+        return this.value_intern;
+    }
+}; */
 
 logCursor = {
     cursor:{
@@ -36,8 +50,16 @@ window.cursorSync.sub({ pub:function(type, self, x, y, w, h, i){
             let timestamp = self.cursor.sync.values[0];
             for(l of app.logs) l.selected = Math.abs(l.timestamp/1000 - timestamp) < 0.1; // within 10ms difference (20ms window)
         }
-        if(i != null) updateDisplayedVarValues(self.cursor.sync.values[0], self.cursor.sync.values[1]);
-        else resetDisplayedVarValues();
+        if(i != null)
+        {   
+            cursorXValueOnWidget = self.cursor.sync.values[0];
+            updateDisplayedVarValues(cursorXValueOnWidget, self.cursor.sync.values[1])
+        }
+        else 
+        {
+            cursorXValueOnWidget = undefined;
+            resetDisplayedVarValues();
+        }
     }
     // let some time to update the axes min/max
     setTimeout(()=>{
@@ -49,6 +71,7 @@ window.cursorSync.sub({ pub:function(type, self, x, y, w, h, i){
 
 
 function findClosestLowerByIdx(arr, n) {
+
     let from = 0,
         to = arr.length - 1,
         idx;
@@ -59,6 +82,8 @@ function findClosestLowerByIdx(arr, n) {
         let isLowerLast = arr[idx] <= n && idx == arr.length-1;
         let isClosestLower = (idx+1 < arr.length-1) && (arr[idx] <= n) && (arr[idx+1] > n);
         if (isClosestLower || isLowerLast) {
+            
+
             return idx;
         }
         else {
@@ -69,23 +94,19 @@ function findClosestLowerByIdx(arr, n) {
     return 0;
 }
 
-
-
 function updateDisplayedVarValues(valueX, valueY){
 
     //for each telem, find closest value (before valueX and valueY)
     let telemList = Object.keys(app.telemetries);
     for(let telemName of telemList) {
         let telem = app.telemetries[telemName];
-        let timeIdx = 0;
-        if(telem.xy) { timeIdx = 2; }
-        let idx = findClosestLowerByIdx(telem.data[timeIdx], valueX);
-        if(idx >= telem.data[timeIdx].length) continue;
-        //Refine index, closer to timestamp
-        if(idx+1 < telem.data[timeIdx].length
-            && (valueX-telem.data[timeIdx][idx]) > (telem.data[timeIdx][idx+1]-valueX)){
-            idx +=1;
-        }
+        
+        let timeIdx = telem.xy?2:0;
+
+        let idx = getClosestSerieIdx(telem, valueX, timeIdx);
+
+        if (idx == -1) continue;
+
         if(idx < telem.data[timeIdx].length) {
             if(telem.xy) {
                 app.telemetries[telemName].value = ""+telem.data[0][idx].toFixed(4)+" "+telem.data[1][idx].toFixed(4)+"";
@@ -95,4 +116,25 @@ function updateDisplayedVarValues(valueX, valueY){
             }
         }
     }
+}
+
+
+function getClosestSerieIdx(telem, valueX, timeIdx=undefined) // telem type : DataSerie, valueX type : Number, timeIdx : Number
+{
+
+    if (timeIdx == undefined)
+        timeIdx = telem.xy?2:0;
+
+    let idx = findClosestLowerByIdx(telem.data[timeIdx], valueX);
+
+    if(idx >= telem.data[timeIdx].length) return -1;
+
+    //Refine index, closer to timestamp
+    if(idx+1 < telem.data[timeIdx].length
+        && (valueX-telem.data[timeIdx][idx]) > (telem.data[timeIdx][idx+1]-valueX)){
+        idx +=1;
+    }
+
+    return idx;
+
 }

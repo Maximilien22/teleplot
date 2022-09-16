@@ -37,7 +37,6 @@ class ChartWidget extends DataWidget{
     }
 
     addSerie(_serie){
-        _serie.options._serie = _serie.name;
         _serie.options.stroke = ColorPalette.getColor(this.series.length).toString();
         _serie.options.fill = ColorPalette.getColor(this.series.length, 0.1).toString();
         if(this.isXY) _serie.options.paths = drawXYPoints;

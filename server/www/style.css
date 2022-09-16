@@ -555,3 +555,18 @@ body {
 	display: flex;
 	flex-direction: column;	
 }
+
+.single-value-widget
+{
+	text-align: center;
+}
+
+.single-value
+{
+	font-size: 4em;
+}
+
+.single-value-title
+{
+	font-size: 2em;
+}

@@ -30,7 +30,7 @@ setInterval(()=>{
 
 
 
-let chart = new SingleValueWidget("last");
+let chart = new SingleValueWidget("max");
 let serie = new DataSerie("sin");
 serie.addSource("sin");
 chart.setSerie(serie);

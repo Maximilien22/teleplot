@@ -7,6 +7,7 @@ function computeStats(data) {
         med:0,
         stdev:0,
     };
+
     let values = data[1];
     //Find min/max indexes from timestampWindow
     let minIdx = 0, maxIdx = data[1].length;
@@ -19,31 +20,21 @@ function computeStats(data) {
     }
     if(values.length==0) return stats;
     // Sort
-    let arr = values.slice().sort(function(a, b){return a - b;});
-    for(let i=0;i<arr.length;i++) {
-        if(!isFinite(arr[i]) || isNaN(arr[i])) {
-            arr.splice(i,1);
-            i--;
-        }
-    }
+    let arr = sortAndClean(values);
+
     if(arr.length==0) return stats;
     // Min, Max
-    stats.min = arr[0];
-    stats.max = arr[arr.length-1];
+    stats.min = getMinOnArray(arr,0,arr.length-1, true);
+    stats.max = getMaxOnArray(arr,0,arr.length-1, true);
     // Sum, Mean
-    for(let i=0;i<arr.length;i++) {
-        stats.sum += arr[i];
-    }
-    stats.mean = stats.sum / arr.length;
+    stats.sum = getArraySum(arr, 0, arr.length-1);
+    
+    stats.mean = getArrayMean(arr, stats.sum);
     // Stdev
-    let stdevSum=0;
-    for(let i=0;i<arr.length;i++) {
-        stdevSum += (arr[i] - stats.mean) * (arr[i] - stats.mean);
-    }
-    stats.stdev = Math.sqrt(stdevSum/arr.length);
+    stats.stdev = getArrayStdevSum(arr, stats.mean);
     // Median (only one that requires the costly sort)
-    var midSize = arr.length / 2;
-	stats.med = midSize % 1 ? arr[midSize - 0.5] : (arr[midSize - 1] + arr[midSize]) / 2;
+    stats.med = getMedOnSortedArray(arr);
+
     return stats;
 }
 
@@ -62,3 +53,95 @@ function resetDisplayedVarValues(){
     }
 }
 
+function sortAndClean(array)
+{
+    let res = array.slice().sort(function(a, b){return a - b;});
+
+    for(let i=0;i<res.length;i++) {
+        if(!isFinite(res[i]) || isNaN(res[i])) {
+            res.splice(i,1);
+            i--;
+        }
+    }
+
+    return res;
+}
+
+function getMinOnArray(array, startIdx, endIdx, isSorted=false)
+{
+    if (array.length == 0)
+        return undefined;
+
+    if (isSorted)
+        return array[startIdx];
+    else
+    {
+        let currMin = array[startIdx];
+        for (let i = startIdx; i<=endIdx; i++)
+        {
+            if (array[i] < currMin) currMin = array[i];
+        }
+        return currMin;
+    }
+}
+
+function getMaxOnArray(array, startIdx, endIdx, isSorted=false)
+{
+    if (array.length == 0)
+        return undefined;
+
+    if (isSorted)
+        return array[endIdx];
+    else
+    {
+        let currMax = array[startIdx];
+        for (let i = startIdx; i<=endIdx; i++)
+        {
+            if (array[i] > currMax) currMax = array[i];
+        }
+        return currMax;
+    }
+}
+
+function getArraySum(array, startIdx, endIdx)
+{
+    if (array.length == 0)
+        return undefined;
+
+    let res = 0;
+
+    for(let i=startIdx;i<=endIdx;i++)
+        res += array[i];
+
+    return res;
+}
+
+function getArrayMean(array, sum=undefined)
+{
+    if (array.length == 0)
+        return undefined;
+
+    sum = sum == undefined?getArraySum(array):sum;
+
+    return sum/array.length;
+}
+
+function getArrayStdevSum(array, mean=undefined)
+{
+    if (array.length == 0)
+        return undefined;
+    mean = (mean == undefined)?getArrayMean(array):mean;
+
+    let stdevSum=0;
+    for(let i=0;i<array.length;i++)
+        stdevSum += (array[i] - mean) * (array[i] - mean);
+    
+
+    return Math.sqrt(stdevSum/array.length);
+}
+
+function getMedOnSortedArray(array)
+{
+    let midSize = array.length / 2;
+	return midSize % 1 ? array[midSize - 0.5] : (array[midSize - 1] + array[midSize]) / 2;
+}

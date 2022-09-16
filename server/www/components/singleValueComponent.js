@@ -1,3 +1,10 @@
 Vue.component('single_value_component',{
-    template : '<div><h1>This is coming from component</h1></div>'
+
+    props: {
+        options: {type : Object, required : true}
+    },
+
+    template : '<div><p class="single-value-title">{{options.widgetMode}} of {{options.serie_name}}</p><p class="single-value">{{options.singlevalue.toFixed(options.decimals_count)}}</p></div>',
+   
+
  });
