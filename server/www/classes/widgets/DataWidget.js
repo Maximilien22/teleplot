@@ -70,6 +70,7 @@ function widgetOnMouseUp()
         widgetBeingResized.isResized = false;
         updateWidgetSize_(widgetBeingResized);
         widgetBeingResized = null;
+
     }
 }
 
@@ -89,6 +90,7 @@ function widgetOnMouseMove(event)
         widgetBeingResized.gridPos.h = widgetBeingResized.initialHeight + Math.round(heightExtension/minWidgetHeight);
         widgetBeingResized.gridPos.w = widgetBeingResized.initialWidth + Math.round(widthExtension/minWidgetWidth);
 
+        //updateWidgetContentSize();
     }
 }
 

@@ -5,7 +5,7 @@ class SingleValueWidget extends DataWidget{
         this.options = {
             serie_name : "untitled", // type : String, the name of the serie (useful to display the serie name in the component)
             singlevalue : 0,// type : Number, the value of the widget ( so the average, the max or the min ... according to widgetMode )
-            decimals_count : 18,
+            number_precision : 5,
             widgetMode : widgetMode_// type : String, what our widget singlevalue is going to be ( either "average", "max", "min" or "last")
         }
         this.currentLastIndex = -1;// type : Number, the value of the last index at which singleValue was calculated
@@ -45,6 +45,12 @@ class SingleValueWidget extends DataWidget{
         this.series[0].update();
         this.updateWidgetValue()
     } 
+
+    toogleValuePrecision()
+    {
+        if (this.options.number_precision != 5) this.options.number_precision = 5;
+        else this.options.number_precision = 12;
+    }
 
     updateWidgetValue()
     {
@@ -86,6 +92,24 @@ class SingleValueWidget extends DataWidget{
         }
     }
 
+}
+
+function updateWidgetContentSize()
+{
+    let child = document.getElementById("single_value_el_id");
+    let parent = document.getElementById("cointaider_single_val_el");
     
+    let new_fontSize = 36;
+
+    let maxHeight = parent.offsetHeight;
+    let maxWidth = parent.offsetWidth;
+    let textHeight;
+    let textWidth;
+    do {
+        child.style.fontSize = new_fontSize + "px";
+        textHeight = child.offsetHeight;
+        textWidth = child.offsetWidth;
+        new_fontSize -= 1;
+    } while ((textHeight > maxHeight || textWidth > maxWidth) && new_fontSize > 3);
 
 }

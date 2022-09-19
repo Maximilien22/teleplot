@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="lib/uPlot.min.css">
 		<link rel="stylesheet" href="style.css">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="lib/vue.js"></script>
 	</head>
 	<body>
@@ -161,7 +162,7 @@
                     </div>
                     <!-- WIDGETS -->
                     <div class="widget-container" id="widget-container-div">
-                        <div v-for="widget in widgets" v-bind:key="widget.id" class="widget-vue" v-bind:class="{ 'widget-drag-over': widget.draggedOver }"
+                        <div id="cointaider_single_val_el" v-for="widget in widgets" v-bind:key="widget.id" class="widget-vue" v-bind:class="{ 'widget-drag-over': widget.draggedOver }"
                          @drop="onDropInWidget($event, widget)" @dragover="onWidgetDragOver($event, widget)" @dragenter.prevent @dragleave="onWidgetDragLeave($event, widget)"
                          v-bind:style="{'grid-area': `span ${widget.gridPos.h} / span ${widget.gridPos.w}`}">
                             <!--Header-->
@@ -213,7 +214,7 @@
                             <span class="widget-option-resize" v-on:mousedown="onMouseDownOnResizeButton($event, widget)" title="Resize widget">⇲</span>
                             
 
-                            <single_value_component class="single-value-widget" v-if="widget.type == 'singleValue'" v-bind:options="widget.options"></single_value_component>
+                            <single_value_component class="single-value-widget" v-if="widget.type == 'singleValue'" v-bind:options="widget.options" v-bind:widget="widget"></single_value_component>
                             <uplot-vue v-else-if="widget.type == 'chart' && !widget.isResized" v-bind:data="widget.data" v-bind:options="widget.options"/>
 
                         </div>
@@ -286,15 +287,11 @@
                 </div>
 
             </div>
-
-            
-
-
             
         </div>
 
     </body>
-    
+
     <script src="lib/uPlot.iife.js"></script>
     <script src="components/uplot-component.js"></script>
     <script src="components/singleValueComponent.js"></script>
