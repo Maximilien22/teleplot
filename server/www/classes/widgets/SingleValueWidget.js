@@ -41,7 +41,7 @@ class SingleValueWidget extends DataWidget{
         return serie.data[0].length -1;
     }
 
-    update(){
+    update(){  
         this.series[0].update();
         this.updateWidgetValue()
     } 

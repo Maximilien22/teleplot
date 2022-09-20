@@ -377,15 +377,33 @@ body {
 	user-select: none;
 }
 
-.new-chart-drop-zone {
+.new-chart-drop-zone, .new-chart-drop-zone-over  {
 	margin: 5px;
-    border: 2px dashed #3498db;
-    border-radius: 5px;
     padding: 5px;
+	border: 2px dashed #3498db;
+    border-radius: 5px;
     color: #3498db;
 	text-align: center;
 
+	border-bottom: 1px dashed #3498db;
+	margin-bottom: 0px;
 }
+
+.last-value-drop-zone, .last-value-drop-zone-over   {
+	margin: 5px;
+    padding: 5px;
+    border: 2px dashed #3498db;
+    border-radius: 5px;
+    color: #3498db;
+	text-align: center;
+
+	border-top: 1px dashed #3498db;
+	margin-top: 0px;
+}
+
+.new-chart-drop-zone-over, .last-value-drop-zone-over {
+	background-color: rgb(255, 255, 0,0.1);
+} 
 
 .serie-name-container {
 	display: flex;
@@ -572,23 +590,49 @@ body {
 	height: 85%; /* 100% - 15% of .widget-vue-header */
 }
   
-.single-value-mode
-{
-	align-self: flex-start;
-	order: 0;
-}
 
-.single-value
-{
+.container-div-single-value {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	overflow: hidden;
+	/* background-color: lightblue; */
+  }
+
+  .div-infos-single-value
+  {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	/* background-color: green; */
+  }
+
+  .single-value-mode
+  {
+	display: block;
+	font-size: 0.8em;
+	margin-top: 4px;
+	margin-left: 4px;
+	text-align: start;
+  }
+
+  .single-value-value
+  {
+	display: block;
+	font-size: 3em;
 	font-weight: 100;
+	text-align: center;
 	font-family: sans-serif;
-	order: 1;
-	font-size: 1.5vw;
 	cursor: pointer;
-	
-}
+  }
 
-.single-value-serie-name
-{
-	order: 2;
-}
+  .single-value-telem
+  {
+	display: block;
+	text-align: center;
+	font-size: 1.5em;
+	margin-bottom: 5px;
+
+  }

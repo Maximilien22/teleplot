@@ -27,11 +27,3 @@ setInterval(()=>{
         conn.updateCMDList();
     }
 }, 3000);
-
-
-/*
-let chart = new SingleValueWidget("last");
-let serie = new DataSerie("sin");
-serie.addSource("sin");
-chart.setSerie(serie);
-widgets.push(chart);*/

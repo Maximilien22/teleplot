@@ -138,6 +138,10 @@
                     @drop="onDropInNewChart($event)" @dragover="onNewChartDragOver($event)" @dragenter.prevent @dragleave="onNewChartDragLeave($event)">
                         <span>🞢 Drop here for new chart</span>
                     </div>
+                    <div class="last-value-drop-zone" v-bind:class="{ 'last-value-drop-zone-over': lastValueDropZoneOver }"
+                    @drop="onDropInLastValue($event)" @dragover="onLastValueDragOver($event)" @dragenter.prevent @dragleave="onLastValueDragLeave($event)">
+                        <span>🞢 Drop here for last value</span>
+                    </div>
                     <input type="text" placeholder="Telemetry filter (ex: a*c* )" v-model="telemetryFilterString"/>
 
 

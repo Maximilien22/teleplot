@@ -3,6 +3,7 @@ This class represents a chart
 */
 
 class ChartWidget extends DataWidget{
+
     constructor(_isXY=false) {
         super();
         this.type = "chart";

@@ -5,6 +5,8 @@ if the resize button of a certain widget is clicked
 then, widgetBeingResized will contain a reference to this particular widget
 otherwise, it is equal to null
 */
+
+
 var widgetBeingResized = null;
 
 window.addEventListener('mouseup', widgetOnMouseUp, false);
