@@ -1,3 +1,5 @@
+var div3D = document.getElementById('div_3d_container');
+
 function initializeScene()
 {
 	let scene = new THREE.Scene();
@@ -33,27 +35,41 @@ function initializeRenderer()
 	return renderer;
 }
 
+function initializeResizeObserver(world)
+{
+	return new ResizeObserver((entries) => world.setRendererSize(entries[0].contentRect)).observe(div3D);
+}
+
+function initializeOrbitControls(camera, renderer)
+{
+	return new OrbitControls( camera, renderer.domElement );
+}
+
 class World {
 	constructor(){
+
 		this.scene = initializeScene();
 		this.light = initializeLight();
 		this.camera = initializeCamera();
 		this.renderer = initializeRenderer();
+		this.resize_obs = initializeResizeObserver(this);
+		this.controls = initializeOrbitControls(this.camera, this.renderer);
 		this.objects = {};
 
-		document.body.appendChild( this.renderer.domElement );
-
-		window.addEventListener('resize', () => {
-			this.setRendererSize(document.body);
-		  });
+		div3D.appendChild( this.renderer.domElement );
     }
+
+	destructor() {
+		if (this.resize_obs != undefined)
+			this.resize_obs.unobserve(div3D);
+	}
 
 	setRendererSize(container)
 	{
-		this.camera.aspect = container.clientWidth / container.clientHeight;
+		this.camera.aspect = container.width / container.height;
 		this.camera.updateProjectionMatrix();
 	
-		this.renderer.setSize(container.clientWidth, container.clientHeight);
+		this.renderer.setSize(container.width, container.height);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
 	}
 }
@@ -61,7 +77,7 @@ class World {
   
 
 
-function buildObjects()
+function buildObjects(world)
 {
 
 	function buildLine(material)
@@ -95,7 +111,7 @@ function buildObjects()
 	buildPlatform(materialPlatform);
 }
 
-function addToScene()
+function addToScene(world)
 {
 	// world.scene.add(world.objects.line);
 	world.scene.add(world.objects.cube, world.light);
@@ -110,12 +126,12 @@ function animate()
 }
 
 
-var world = new World();
+let world = new World();
 
-let controls = new OrbitControls( world.camera, renderer.domElement );
 
-buildObjects();
-addToScene();
+
+buildObjects(world);
+addToScene(world);
 animate();
 
 
@@ -136,3 +152,6 @@ loader.load( './model.glb', function ( gltf ) {
 
 
 
+// fetch('file.txt')
+//   .then(response => response.text())
+//   .then(text => console.log(text))
